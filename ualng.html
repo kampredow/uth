@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unknown</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <style>
+    :root {
+      --primary: #880e4f;
+      --primary-light: #ad1457;
+      --primary-lighter: #f8bbd0;
+      --primary-lightest: #fce4ec;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    .floating { animation: float 3s ease-in-out infinite; }
+    .rotating { animation: rotate 10s linear infinite; }
+    .pulsing { animation: pulse 2s ease-in-out infinite; }
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      opacity: 0;
+      animation: confettiFall 5s linear forwards;
+    }
+    .cake-layer {
+      position: relative;
+      border-radius: 10px;
+    }
+    .candle-flame {
+      position: absolute;
+      width: 8px;
+      height: 15px;
+      background: linear-gradient(to top, #ff7800, #ffef00);
+      border-radius: 50% 50% 20% 20%;
+      filter: blur(1px);
+      animation: flicker 0.5s infinite alternate;
+    }
+    @keyframes flicker {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+    #mainContent { display: none; }
+    #wrongPassMsg { color: red; display: none; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-rose-100 to-rose-200 min-h-screen overflow-x-hidden">
+  
+  <!-- Password Prompt -->
+  <div id="passwordPrompt" class="min-h-screen flex items-center justify-center flex-col">
+    <h2 class="text-2xl mb-4 text-rose-800 font-bold">Masukkan Password</h2>
+    <input id="passwordInput" type="password" placeholder="Password" class="border border-rose-600 px-4 py-2 rounded-lg mb-2"/>
+    <button onclick="checkPassword()" class="bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700">Masuk</button>
+    <p id="wrongPassMsg">Password salah.</p>
+  </div>
+
+  <!-- Confetti & Main Content -->
+  <div id="mainContent">
+    <div id="confetti-container" class="fixed inset-0 pointer-events-none"></div>
+    <div class="container mx-auto px-4 py-12 flex flex-col items-center">
+      <!-- Birthday Title -->
+      <div class="text-center mb-8">
+        <h1 class="text-5xl md:text-7xl font-bold text-rose-800 mb-4 animate__animated animate__bounceInDown">
+          Happy Birthday!
+        </h1>
+      </div>
+
+      <!-- Birthday Message -->
+      <div class="max-w-2xl bg-white bg-opacity-80 rounded-xl p-6 shadow-xl mb-8 animate__animated animate__fadeInUp">
+        <h2 class="text-2xl md:text-3xl font-bold text-rose-800 mb-4">Mom,</h2>
+        <p class="text-gray-700 mb-4">
+          Selamat ulang tahun mama 🥳🎉
+          Semoga setiap langkahmu 👣 dipenuhi cahaya harapan ✨, setiap mimpimu 💭 mendekat satu per satu, dan hidupmu dipenuhi cinta ❤️, tawa 😀, dan kebahagiaan sejati 🎊
+        </p>
+      </div>
+
+      <!-- Interactive Button -->
+      <button id="celebrateBtn" class="bg-gradient-to-r from-rose-500 to-rose-700 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate__animated animate__pulse animate__infinite">
+        Klik saya!
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      if (input === "mm") {
+        document.getElementById("passwordPrompt").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      } else {
+        document.getElementById("wrongPassMsg").style.display = "block";
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const celebrateBtn = document.getElementById('celebrateBtn');
+      const confettiContainer = document.getElementById('confetti-container');
+
+      function createConfetti() {
+        const colors = ['#f44336', '#e91e63', '#c2185b', '#880e4f', '#d81b60', '#ad1457', '#ec407a', '#f06292', '#f8bbd0', '#fce4ec'];
+        for (let i = 0; i < 100; i++) {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+          confetti.style.animationDelay = (Math.random() * 2) + 's';
+          confetti.style.width = (Math.random() * 10 + 5) + 'px';
+          confetti.style.height = (Math.random() * 10 + 5) + 'px';
+          confettiContainer.appendChild(confetti);
+          setTimeout(() => {
+            confetti.remove();
+          }, 5000);
+        }
+      }
+
+      celebrateBtn?.addEventListener('click', function() {
+        createConfetti();
+        document.querySelector('h1')?.classList.add('animate__animated', 'animate__tada');
+        document.querySelector('.cake-layer')?.classList.add('animate__animated', 'animate__wobble');
+        setTimeout(() => {
+          document.querySelector('h1')?.classList.remove('animate__animated', 'animate__tada');
+          document.querySelector('.cake-layer')?.classList.remove('animate__animated', 'animate__wobble');
+        }, 1000);
+      });
+
+      setTimeout(createConfetti, 1000);
+    });
+  </script>
+</body>
+</html>
